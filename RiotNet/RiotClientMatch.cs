@@ -30,7 +30,7 @@ namespace RiotNet
         /// <summary>
         /// Gets the match list for a summoner. This method uses the Match API.
         /// </summary>
-        /// <param name="summonerId">The summoner's summoner IDs.</param>
+        /// <param name="accountId">The summoner's account ID.</param>
         /// <param name="championIds">Only get games where the summoner played one of these champions.</param>
         /// <param name="rankedQueues">Only get games from these queues. You should only use ranked queues for this (<see cref="QueueType.TEAM_BUILDER_RANKED_SOLO"/>, <see cref="QueueType.RANKED_FLEX_SR"/>, <see cref="QueueType.RANKED_FLEX_TT"/>).</param>
         /// <param name="seasons">Only get games from these seasons.</param>
@@ -41,17 +41,7 @@ namespace RiotNet
         /// <param name="platformId">The platform ID of the server to connect to. This should equal one of the <see cref="Models.PlatformId"/> values. If unspecified, the <see cref="PlatformId"/> property will be used.</param>
         /// <param name="token">The cancellation token to cancel the operation.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task<MatchList> GetMatchListByAccountIdAsync(long summonerId, IEnumerable<long> championIds = null, IEnumerable<QueueType> rankedQueues = null, IEnumerable<Season> seasons = null, DateTime? beginTime = null, DateTime? endTime = null, int? beginIndex = null, int? endIndex = null, string platformId = null, CancellationToken token = default(CancellationToken));
-
-        /// <summary>
-        /// Gets the recent match list for an account. This method uses the Match API.
-        /// </summary>
-        /// <param name="accountId">The account ID.</param>
-        /// <param name="platformId">The platform ID of the server to connect to. This should equal one of the <see cref="Models.PlatformId"/> values. If unspecified, the <see cref="PlatformId"/> property will be used.</param>
-        /// <param name="token">The cancellation token to cancel the operation.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        [Obsolete("Use GetMatchListByAccountIdAsync instead")]
-        Task<MatchList> GetRecentMatchListByAccountIdAsync(long accountId, string platformId = null, CancellationToken token = default(CancellationToken));
+        Task<MatchList> GetMatchListByAccountIdAsync(string accountId, IEnumerable<long> championIds = null, IEnumerable<QueueType> rankedQueues = null, IEnumerable<Season> seasons = null, DateTime? beginTime = null, DateTime? endTime = null, int? beginIndex = null, int? endIndex = null, string platformId = null, CancellationToken token = default(CancellationToken));
 
         /// <summary>
         /// Gets the list of match IDs for a tournament code. This method uses the Match API. This endpoint is only accessible if you have a tournament API key.
@@ -75,7 +65,7 @@ namespace RiotNet
 
     public partial class RiotClient
     {
-        private const string matchBasePath = "match/v3";
+        private const string matchBasePath = "match/v4";
 
         /// <summary>
         /// Gets the details of a match. This method uses the Match API.
@@ -115,7 +105,7 @@ namespace RiotNet
         /// <param name="platformId">The platform ID of the server to connect to. This should equal one of the <see cref="Models.PlatformId"/> values. If unspecified, the <see cref="PlatformId"/> property will be used.</param>
         /// <param name="token">The cancellation token to cancel the operation.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public Task<MatchList> GetMatchListByAccountIdAsync(long accountId, IEnumerable<long> championIds = null, IEnumerable<QueueType> rankedQueues = null, IEnumerable<Season> seasons = null, DateTime? beginTime = null, DateTime? endTime = null, int? beginIndex = null, int? endIndex = null, string platformId = null, CancellationToken token = default(CancellationToken))
+        public Task<MatchList> GetMatchListByAccountIdAsync(string accountId, IEnumerable<long> championIds = null, IEnumerable<QueueType> rankedQueues = null, IEnumerable<Season> seasons = null, DateTime? beginTime = null, DateTime? endTime = null, int? beginIndex = null, int? endIndex = null, string platformId = null, CancellationToken token = default(CancellationToken))
         {
             var queryParameters = new Dictionary<string, object>();
             if (championIds != null)
@@ -134,19 +124,6 @@ namespace RiotNet
                 queryParameters["endIndex"] = endIndex.Value.ToString(CultureInfo.InvariantCulture);
 
             return GetAsync<MatchList>($"{matchBasePath}/matchlists/by-account/{accountId}", $"{matchBasePath}/matchlists/by-account/{{accountId}}", platformId, token, queryParameters);
-        }
-
-        /// <summary>
-        /// Gets the recent match list for an account. This method uses the Match API.
-        /// </summary>
-        /// <param name="accountId">The account ID.</param>
-        /// <param name="platformId">The platform ID of the server to connect to. This should equal one of the <see cref="Models.PlatformId"/> values. If unspecified, the <see cref="PlatformId"/> property will be used.</param>
-        /// <param name="token">The cancellation token to cancel the operation.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        [Obsolete("Use GetMatchListByAccountIdAsync instead")]
-        public Task<MatchList> GetRecentMatchListByAccountIdAsync(long accountId, string platformId = null, CancellationToken token = default(CancellationToken))
-        {
-            return GetAsync<MatchList>($"{matchBasePath}/matchlists/by-account/{accountId}/recent", $"{matchBasePath}/matchlists/by-account/{{accountId}}/recent", platformId, token);
         }
 
         /// <summary>

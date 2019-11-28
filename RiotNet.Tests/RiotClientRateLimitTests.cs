@@ -103,11 +103,11 @@ namespace RiotNet.Tests
             await Task.Delay(TimeSpan.FromMinutes(2)); // in case a previous test maxed out the limit
 
             RiotClient.RateLimiter = new RateLimiter();
-            RetryEventHandler onRateLimitExceeded = (o, e) =>
+            void onRateLimitExceeded(object o, RetryEventArgs e)
             {
                 if (e.Response != null)
                     Assert.Fail("Rate limit was exceeded! Proactive rate limiting failed.");
-            };
+            }
             IRiotClient client = new RiotClient();
             client.Settings.RetryOnRateLimitExceeded = true;
             client.RateLimitExceeded += onRateLimitExceeded;
@@ -190,34 +190,6 @@ namespace RiotNet.Tests
             var unexpectedCompletedCount = tasks.Skip(20).Count(t => t.IsCompleted);
             Assert.That(expectedCompletedCount, Is.EqualTo(20), $"Tasks were completed out of order - {expectedCompletedCount} of the first 20 were completed. ({unexpectedCompletedCount} of the last 10)");
             Assert.That(unexpectedCompletedCount, Is.EqualTo(0), $"Extra tasks were completed - {unexpectedCompletedCount}/10.");
-        }
-
-        [Test]
-        [Ignore("This maxes out the static data method for an hour, and will cause other tests to fail")]
-        public async Task RateLimitTest_ShouldThrottleSpecificMethod()
-        {
-            IRiotClient client = new RiotClient(new RateLimiter());
-            client.Settings.RetryOnRateLimitExceeded = true;
-            client.RateLimitExceeded += (o, e) =>
-            {
-                if (e.Response != null)
-                    Assert.Fail("Rate limit was exceeded! Proactive rate limiting failed.");
-            };
-
-            for (var i = 0; i < 10; ++i)
-            {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
-                var champs = await client.GetStaticChampionsAsync(token: cts.Token);
-                Assert.That(champs, Is.Not.Null, "Failed to get champion: " + i);
-            }
-            try
-            {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
-                await client.GetStaticChampionsAsync(token: cts.Token);
-                Assert.Fail("Successfully hit the static data endpoint 11 times! This test probably needs to be updated.");
-            }
-            catch (OperationCanceledException)
-            { }
         }
 
         private Task MaxOutRateLimit(IRiotClient client, int requestCount = 20)

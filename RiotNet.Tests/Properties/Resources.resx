@@ -130,7 +130,7 @@
   <data name="SampleChampionMastery" xml:space="preserve">
     <value>{
    "championPoints": 61008,
-   "playerId": 34172230,
+   "summonerId": "o9j6bHsBjfj8VDEdiSvJjcGMRpeJ12uOrYZsrRtzcevnF6c",
    "championPointsUntilNextLevel": 1,
    "championLevel": 5,
    "championId": 412,
@@ -299,8 +299,8 @@
          "inactive": true,
          "veteran": true,
          "losses": 11,
-         "playerOrTeamName": "ApeX R Gaming",
-         "playerOrTeamId": "TEAM-a77c7a20-7f0e-11e4-8c36-c81f66dd45c9",
+         "summonerName": "ApeX R Gaming",
+         "summonerId": "TEAM-a77c7a20-7f0e-11e4-8c36-c81f66dd45c9",
          "wins": 36,
          "miniSeries": {
            "losses": 2,

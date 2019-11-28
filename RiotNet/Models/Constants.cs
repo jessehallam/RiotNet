@@ -165,6 +165,14 @@ namespace RiotNet.Models
         /// PROJECT: Hunters
         /// </summary>
         public const string PROJECT = "PROJECT";
+        /// <summary>
+        /// Nexus blitz
+        /// </summary>
+        public const string GAMEMODEX = "GAMEMODEX";
+        /// <summary>
+        /// Odyssey: Extraction
+        /// </summary>
+        public const string ODYSSEY = "ODYSSEY";
     }
 
     /// <summary>
@@ -225,7 +233,6 @@ namespace RiotNet.Models
     /// </summary>
     /// <remarks>
     /// This list contains all supported locales at the time of the RiotNet release.
-    /// If you want to iteralte over all currently supported locales, use <see cref="IRiotClient.GetStaticLanguagesAsync(string, System.Threading.CancellationToken)"/>
     /// </remarks>
     public static class Locale
     {
@@ -345,7 +352,7 @@ namespace RiotNet.Models
         /// <summary>
         /// Gets the culture info for a locale.
         /// </summary>
-        /// <param name="locale">The locale (or language tag). This should equal one of the <see cref="Locale"/> values, or one of the values returned by <see cref="IRiotClient.GetStaticLanguagesAsync(string, System.Threading.CancellationToken)"/>.</param>
+        /// <param name="locale">The locale (or language tag). This should equal one of the <see cref="Locale"/> values.</param>
         /// <returns>The culture info.</returns>
         public static CultureInfo GetCultureInfo(string locale)
         {
@@ -434,6 +441,14 @@ namespace RiotNet.Models
         /// Substructure 43 (PROJECT: Hunters)
         /// </summary>
         public const int SUBSTRUCTURE_43 = 19;
+        /// <summary>
+        /// Crash Site (Odyssey: Extraction)
+        /// </summary>
+        public const int CRASH_SITE = 20;
+        /// <summary>
+        /// Nexus Blitz
+        /// </summary>
+        public const int NEXUS_BLITZ = 21;
     }
 
     /// <summary>
@@ -710,6 +725,15 @@ namespace RiotNet.Models
         {
             return platformId == NA1 || platformId == "NA";
         }
+
+        /// <summary>
+        /// Standardizes a platform ID (Converts "NA" to "NA1").
+        /// </summary>
+        /// <param name="platformId">The platform ID.</param>
+        public static string Standardize(string platformId)
+        {
+            return platformId == "NA" ? NA1 : platformId;
+        }
     }
 
     /// <summary>
@@ -805,6 +829,10 @@ namespace RiotNet.Models
         /// </summary>
         public const string CHALLENGER = "CHALLENGER";
         /// <summary>
+        /// Grandmaster tier
+        /// </summary>
+        public const string GRANDMASTER = "GRANDMASTER";
+        /// <summary>
         /// Master tier
         /// </summary>
         public const string MASTER = "MASTER";
@@ -828,6 +856,68 @@ namespace RiotNet.Models
         /// Bronze tier
         /// </summary>
         public const string BRONZE = "BRONZE";
+        /// <summary>
+        /// Iron tier
+        /// </summary>
+        public const string IRON = "IRON";
+    }
+
+    /// <summary>
+    /// Represents a division within a ranked tier.
+    /// </summary>
+    public static class Division
+    {
+        /// <summary>
+        /// Division 1
+        /// </summary>
+        public const string I = "I";
+        /// <summary>
+        /// Division 2
+        /// </summary>
+        public const string II = "II";
+        /// <summary>
+        /// Division 3
+        /// </summary>
+        public const string III = "III";
+        /// <summary>
+        /// Division 4
+        /// </summary>
+        public const string IV = "IV";
+    }
+
+    /// <summary>
+    /// Represents a lane position.
+    /// </summary>
+    public static class LanePosition
+    {
+        /// <summary>
+        /// Not defined.
+        /// </summary>
+        public const string NONE = "NONE";
+        /// <summary>
+        /// Top lane.
+        /// </summary>
+        public const string TOP = "TOP";
+        /// <summary>
+        /// Jungle.
+        /// </summary>
+        public const string JUNGLE = "JUNGLE";
+        /// <summary>
+        /// Middle lane.
+        /// </summary>
+        public const string MIDDLE = "MIDDLE";
+        /// <summary>
+        /// Bottom lane.
+        /// </summary>
+        public const string BOTTOM = "BOTTOM";
+        /// <summary>
+        /// Support lane.
+        /// </summary>
+        public const string UTILITY = "UTILITY";
+        /// <summary>
+        /// Apex.
+        /// </summary>
+        public const string APEX = "APEX";
     }
 
     /// <summary>

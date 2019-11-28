@@ -1,19 +1,15 @@
 ﻿namespace RiotNet.Models
 {
     /// <summary>
-    /// Contains league participant information representing a summoner. Also contains information about the legue containing this entry.
+    /// Contains a summoner's rank information.
     /// </summary>
-    public class LeaguePosition : LeagueItem
+    public class LeagueEntry : LeagueItem
     {
         /// <summary>
         /// Gets or sets the ID of the league.
+        /// NOTE: this value will not be set by GetLeagueEntriesAsync(), but it may be set in the future.
         /// </summary>
         public string LeagueId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the league.
-        /// </summary>
-        public string LeagueName { get; set; }
 
         /// <summary>
         /// Gets or sets the league's queue type. This should equal one of the <see cref="RankedQueue"/> values.
@@ -24,10 +20,5 @@
         /// Gets or sets the league's tier. This should equal one of the <see cref="Models.Tier"/> values.
         /// </summary>
         public string Tier { get; set; }
-
-        /// <summary>
-        /// Gets or sets the league's position. This should equal one of the <see cref="Models.LanePosition"/> values.
-        /// </summary>
-        public string Position { get; set; }
     }
 }

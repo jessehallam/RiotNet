@@ -359,14 +359,14 @@ namespace RiotNet
                     }
                 }
             }
-            Func<HttpRequestMessage> buildRequest = () =>
+            HttpRequestMessage buildRequest()
             {
                 var request = new HttpRequestMessage(method, resourceBuilder.ToString());
                 request.Headers.Add("X-Riot-Token", Settings.ApiKey);
                 if (body != null)
                     request.Content = new JsonContent(body);
                 return request;
-            };
+            }
             var methodName = method + " " + resourceName;
             var queryIndex = methodName.IndexOf('?');
             if (queryIndex > 0)
@@ -492,14 +492,8 @@ namespace RiotNet
         protected async Task<RiotResponse> SendAsync(HttpRequestMessage request, string methodName, string platformId, CancellationToken token)
         {
             DateTime targetTime = DateTime.UtcNow;
-            if (!methodName.Contains("static-data/"))
-            {
-                if (retryAfterTimes.TryGetValue(platformId, out DateTime retryAfter))
-                {
-                    if (retryAfter > targetTime)
-                        targetTime = retryAfter;
-                }
-            }
+            if (retryAfterTimes.TryGetValue(platformId, out DateTime retryAfter) && retryAfter > targetTime)
+                targetTime = retryAfter;
             if (rateLimiter != null)
             {
                 var limiterDelayTime = rateLimiter.AddRequestOrGetDelay(methodName, platformId);
